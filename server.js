@@ -11,7 +11,7 @@ app.use(cors());
 
 // MongoDB Atlas connection
 const uri = "mongodb+srv://hansnursin:qLWsMHqLo2tv2pp2@cluster0.ucosc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(uri);
 
 let db, tasksCollection;
 
@@ -70,7 +70,6 @@ app.put('/api/tasks/:id', async (req, res) => {
         const id = req.params.id;
         const updatedTask = req.body;
 
-        // Ensure to use 'new' when creating ObjectId
         const result = await tasksCollection.updateOne(
             { _id: new ObjectId(id) },
             { $set: { action: updatedTask.action, done: updatedTask.done } }
@@ -86,6 +85,7 @@ app.put('/api/tasks/:id', async (req, res) => {
     }
 });
 
+// Start the server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
 });
